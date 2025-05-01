@@ -36,7 +36,7 @@ class TransactionDetailActivity : AppCompatActivity() {
                 imageView.setImageURI(uri)
             } catch (e: Exception) {
                 e.printStackTrace()
-                imageView.setImageResource(R.drawable.ic_launcher_background)
+                imageView.setImageResource(R.drawable.logo)
             }
         } else {
             imageView.setImageResource(R.drawable.logo)
