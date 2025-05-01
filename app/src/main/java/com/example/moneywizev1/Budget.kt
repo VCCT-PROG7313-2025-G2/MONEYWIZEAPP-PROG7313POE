@@ -60,7 +60,7 @@ class Budget : AppCompatActivity() {
             }
 
             val success =
-                dbHelper.insertBudget(name, amount, minspend, capital, monthlyGoal, notes, date)
+                dbHelper.insertBudget(context=this,name, amount, minspend, capital, monthlyGoal, notes, date)
             if (success) {
                 Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show()
 

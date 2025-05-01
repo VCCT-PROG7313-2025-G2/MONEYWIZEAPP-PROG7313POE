@@ -86,7 +86,7 @@ class ExpensePage : AppCompatActivity() {
             if (currentTotal + amount > minspend) {
                 Toast.makeText(this, "Expense exceeds the budget's minspend limit!", Toast.LENGTH_LONG).show()
             } else {
-                val success = dbHelper.insertExpense(
+                val success = dbHelper.insertExpense(context=this,
                     name,
                     amount,
                     date,

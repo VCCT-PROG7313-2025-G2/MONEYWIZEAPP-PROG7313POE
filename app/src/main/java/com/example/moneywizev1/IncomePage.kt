@@ -56,7 +56,7 @@ class IncomePage : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val success = dbHelper.insertIncome(
+            val success = dbHelper.insertIncome(context=this,
                 name,
                 amount,
                 date,

@@ -3,7 +3,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.icu.text.SimpleDateFormat
 import android.util.Log
+import android.widget.Toast
+import java.text.ParseException
+import java.util.Locale
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", null, 7) {
 
@@ -85,7 +89,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
 
         return result != -1L
     }
-    fun insertExpense(
+    fun insertExpense(context: Context,
         name: String,
         amount: Double,
         date: String,
@@ -94,6 +98,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         notes: String,
         imageUri: String?
     ): Boolean {
+        // Validate date
+        if (!isValidDate(date)) {
+            Toast.makeText(context, "Error: Date must be in format YYYY-MM-DD", Toast.LENGTH_LONG).show()
+            return false
+        }
         val db = writableDatabase
 
         // Step 1: Get total current expenses for this budget
@@ -138,7 +147,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         return result != -1L
     }
 
-    fun insertIncome(
+    fun insertIncome(context: Context,
         name: String,
         amount: Double,
         date: String,
@@ -147,6 +156,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         notes: String,
         imageUri: String?
     ): Boolean {
+        // Validate date
+        if (!isValidDate(date)) {
+            Toast.makeText(context, "Error: Date must be in format YYYY-MM-DD", Toast.LENGTH_LONG).show()
+            return false
+        }
         val db = writableDatabase
         val values = ContentValues().apply {
             put("name", name)
@@ -363,7 +377,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         val result = db.delete("budgets", "name = ?", arrayOf(name))
         return result > 0
     }
-    fun insertBudget(name: String, amount: Double, minspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
+    private fun isValidDate(dateStr: String): Boolean {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        sdf.isLenient = false // Enforce strict format
+        return try {
+            sdf.parse(dateStr)
+            true
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+    fun insertBudget(context: Context,name: String, amount: Double, minspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
+        // Validate date
+        if (!isValidDate(date)) {
+            Toast.makeText(context, "Error: Date must be in format YYYY-MM-DD", Toast.LENGTH_LONG).show()
+            return false
+        }
         // Error check
         if (monthlyGoal > minspend) {
             Log.e("InsertBudget", "monthlyGoal ($monthlyGoal) cannot be greater than minspend ($minspend)")

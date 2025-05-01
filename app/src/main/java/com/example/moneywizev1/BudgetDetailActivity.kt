@@ -93,15 +93,15 @@ class BudgetDetailActivity : AppCompatActivity() {
         val db: SQLiteDatabase = dbHelper.readableDatabase
 
         // Fetch initial capital and minspend
-        val query = "SELECT capital, minspend FROM budgets WHERE name = ?"
+        val query = "SELECT capital,monthlyGoal, minspend FROM budgets WHERE name = ?"
         val cursor = db.rawQuery(query, arrayOf(budgetName))
         if (cursor != null && cursor.moveToFirst()) {
             currentCount = cursor.getDouble(0).toInt()  // capital is REAL
-            val minSpend = cursor.getDouble(1)          // minspend is REAL
-
+            val minSpend = cursor.getDouble(2)          // minspend is REAL
+            val monthlyGoal = cursor.getDouble(1)
             // Update Min Spend TextView
             val minSpendTextView = findViewById<TextView>(R.id.minSpendTextView)
-            minSpendTextView.text = "Spending limit: $minSpend"
+            minSpendTextView.text = "Spending limit: $minSpend //MonthlyGoal:$monthlyGoal"
         }
         cursor?.close()
 
