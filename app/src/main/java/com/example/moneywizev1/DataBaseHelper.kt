@@ -3,6 +3,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", null, 7) {
 
@@ -32,7 +33,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
                 imageUri TEXT
             )
         """.trimIndent())
-        db.execSQL("CREATE TABLE budgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL,minspend REAL, capital REAL, notes TEXT, date TEXT)")
+        db.execSQL("CREATE TABLE budgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL,minspend REAL,capital REAL,monthlyGoal REAL, notes TEXT, date TEXT)")
 
     }
 
@@ -136,38 +137,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         val result = db.insert("expenses", null, values)
         return result != -1L
     }
-    fun getTransactionsBetweenDates(startDate: String, endDate: String): List<String> {
-        val transactions = mutableListOf<String>()
-        val db = readableDatabase
 
-        val expenseCursor = db.rawQuery(
-            "SELECT name, amount, date, category FROM expenses WHERE date BETWEEN ? AND ? ORDER BY date",
-            arrayOf(startDate, endDate)
-        )
-        while (expenseCursor.moveToNext()) {
-            val name = expenseCursor.getString(0)
-            val amount = expenseCursor.getDouble(1)
-            val date = expenseCursor.getString(2)
-            val category = expenseCursor.getString(3)
-            transactions.add("Expense: $name - $category - R$amount on $date")
-        }
-        expenseCursor.close()
-
-        val incomeCursor = db.rawQuery(
-            "SELECT name, amount, date, category FROM income WHERE date BETWEEN ? AND ? ORDER BY date",
-            arrayOf(startDate, endDate)
-        )
-        while (incomeCursor.moveToNext()) {
-            val name = incomeCursor.getString(0)
-            val amount = incomeCursor.getDouble(1)
-            val date = incomeCursor.getString(2)
-            val category = incomeCursor.getString(3)
-            transactions.add("Income: $name - $category - R$amount on $date")
-        }
-        incomeCursor.close()
-
-        return transactions
-    }
     fun insertIncome(
         name: String,
         amount: Double,
@@ -393,13 +363,19 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         val result = db.delete("budgets", "name = ?", arrayOf(name))
         return result > 0
     }
-    fun insertBudget(name: String, amount: Double, minspend: Double, capital: Double, notes: String, date: String): Boolean {
+    fun insertBudget(name: String, amount: Double, minspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
+        // Error check
+        if (monthlyGoal > minspend) {
+            Log.e("InsertBudget", "monthlyGoal ($monthlyGoal) cannot be greater than minspend ($minspend)")
+            return false
+        }
         val db = writableDatabase
         val values = ContentValues().apply {
             put("name", name)
             put("amount", amount)
             put("minspend", minspend)
             put("capital", capital)
+            put("monthlyGoal", monthlyGoal)
             put("notes", notes)
             put("date", date)
         }

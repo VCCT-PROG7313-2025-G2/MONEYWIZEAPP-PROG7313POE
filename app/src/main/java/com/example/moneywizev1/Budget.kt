@@ -26,6 +26,7 @@ class Budget : AppCompatActivity() {
         val notesInput = findViewById<EditText>(R.id.editTextText2)
         val dateInput = findViewById<EditText>(R.id.editTextDate2)
         val confirmButton = findViewById<Button>(R.id.button)
+        val monthlyGoalInput = findViewById<EditText>(R.id.monthlyGoalEditTxt)
 
         // Button click: Save to database
         confirmButton.setOnClickListener {
@@ -33,11 +34,13 @@ class Budget : AppCompatActivity() {
             val amountStr = amountInput.text.toString().trim()
             val minspendStr = minspendInput.text.toString().trim()
             val capitalStr = capitalInput.text.toString().trim()
+            val monthlyGoalStr = monthlyGoalInput.text.toString().trim()
             val notes = notesInput.text.toString().trim()
             val date = dateInput.text.toString().trim()
 
-            if (name.isEmpty() || amountStr.isEmpty() ||minspendStr.isEmpty() || capitalStr.isEmpty() || date.isEmpty()) {
-                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
+            if (name.isEmpty() || amountStr.isEmpty() || minspendStr.isEmpty() || capitalStr.isEmpty() || monthlyGoalStr.isEmpty() || date.isEmpty()) {
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -45,13 +48,19 @@ class Budget : AppCompatActivity() {
             val amount = amountStr.toDoubleOrNull()
             val capital = capitalStr.toDoubleOrNull()
             val minspend = minspendStr.toDoubleOrNull()
+            val monthlyGoal = monthlyGoalStr.toDoubleOrNull()
 
-            if (amount == null || capital == null|| minspend == null) {
-                Toast.makeText(this, "Amount and Capital must be valid numbers.", Toast.LENGTH_SHORT).show()
+            if (amount == null || capital == null || minspend == null || monthlyGoal == null) {
+                Toast.makeText(
+                    this,
+                    "Amount and Capital must be valid numbers.",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            val success = dbHelper.insertBudget(name, amount, minspend , capital, notes, date)
+            val success =
+                dbHelper.insertBudget(name, amount, minspend, capital, monthlyGoal, notes, date)
             if (success) {
                 Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show()
 
@@ -60,19 +69,27 @@ class Budget : AppCompatActivity() {
                 amountInput.text.clear()
                 minspendInput.text.clear()
                 capitalInput.text.clear()
+                monthlyGoalInput.text.clear()
                 notesInput.text.clear()
                 dateInput.text.clear()
             } else {
-                Toast.makeText(this, "Failed to save budget.", Toast.LENGTH_SHORT).show()
+                if (monthlyGoal > minspend) {
+                    Toast.makeText(
+                        this,
+                        "Monthly goal cannot be greater than spend limit.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(this, "Failed to save budget.", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
-        // Handle system bars insets (status bar, navigation bar)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+            // Handle system bars insets (status bar, navigation bar)
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
     }
 }
-

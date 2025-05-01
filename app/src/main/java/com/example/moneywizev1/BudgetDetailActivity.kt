@@ -101,7 +101,7 @@ class BudgetDetailActivity : AppCompatActivity() {
 
             // Update Min Spend TextView
             val minSpendTextView = findViewById<TextView>(R.id.minSpendTextView)
-            minSpendTextView.text = "Spend limit: $minSpend"
+            minSpendTextView.text = "Spending limit: $minSpend"
         }
         cursor?.close()
 
