@@ -15,10 +15,10 @@ class Budget : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_budget)
 
-        // Initialize DB helper
+        
         val dbHelper = DatabaseHelper(this)
 
-        // Get references to all EditTexts and Button
+        
         val nameInput = findViewById<EditText>(R.id.editTextText)
         val amountInput = findViewById<EditText>(R.id.editTextDate)
         val maxspendInput = findViewById<EditText>(R.id.minSpendEditTxt)
