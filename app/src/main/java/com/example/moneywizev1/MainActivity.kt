@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btnlogin)
         val signupButton = findViewById<Button>(R.id.btnsignup)
 
-        // Initialize the database helper
         val db = DatabaseHelper(this)
 
         loginButton.setOnClickListener {
@@ -38,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 val valid = db.checkUser(email, password)
                 if (valid) {
                     Toast.makeText(this, "Logged in as $email", Toast.LENGTH_SHORT).show()
-                    // Navigate to another activity (replace 'login::class.java' with your target activity)
                     val intent = Intent(this, MainAct2::class.java)
                     startActivity(intent)
                     finish()
