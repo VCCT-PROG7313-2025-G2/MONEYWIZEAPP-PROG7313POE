@@ -10,3 +10,4 @@ data class Transaction(
     val imageUri: String? = null
 )
 
+Youtu.be. (2025a). Expense Manager App - Part 36 | Retrieve Income Data to Dashboard. [online] Available at: https://youtu.be/Mz3rGWZw-n8?si=dnhJrDakUIMlrhHv [Accessed 24 Apr. 2025].
