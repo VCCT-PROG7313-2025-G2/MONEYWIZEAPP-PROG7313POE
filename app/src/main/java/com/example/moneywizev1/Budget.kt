@@ -21,7 +21,7 @@ class Budget : AppCompatActivity() {
         // Get references to all EditTexts and Button
         val nameInput = findViewById<EditText>(R.id.editTextText)
         val amountInput = findViewById<EditText>(R.id.editTextDate)
-        val maxspendInput = findViewById<EditText>(R.id.maxspendEditTxt)
+        val maxspendInput = findViewById<EditText>(R.id.minspendEditTxt)
         val capitalInput = findViewById<EditText>(R.id.editTextNumber)
         val notesInput = findViewById<EditText>(R.id.editTextText2)
         val dateInput = findViewById<EditText>(R.id.editTextDate2)
