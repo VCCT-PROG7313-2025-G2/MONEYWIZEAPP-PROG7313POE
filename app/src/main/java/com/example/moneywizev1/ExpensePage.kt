@@ -37,7 +37,7 @@ class ExpensePage : AppCompatActivity() {
         val categoryField = findViewById<EditText>(R.id.editTextText6)
         val notesField = findViewById<EditText>(R.id.editTextText5)
         loadBudgetsIntoSpinner()
-        // Add photo button functional
+        // This is to be able to add a photo button functional
         addPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -60,7 +60,7 @@ class ExpensePage : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Calculate total existing expenses for this budget
+            // This calculates the total existing expenses for this budget
             val totalExpensesCursor = dbHelper.readableDatabase.rawQuery(
                 "SELECT SUM(amount) FROM expenses WHERE budget = ?",
                 arrayOf(budget)
@@ -82,7 +82,7 @@ class ExpensePage : AppCompatActivity() {
             }
             budgetCursor.close()
 
-// Compare and act accordingly
+// To be able to compare and act accordingly
             if (currentTotal + amount > maxspend) {
                 Toast.makeText(this, "Expense exceeds the budget's maxspend limit!", Toast.LENGTH_LONG).show()
             } else {
@@ -147,3 +147,6 @@ class ExpensePage : AppCompatActivity() {
         }
     }
 }
+
+TonikamiTV (2015). Android Studio Tutorial - Upload Picture Part 1 - User Interface. [online] YouTube. Available at: https://www.youtube.com/watch?v=e8x-nu9-_BM [Accessed 25 Apr. 2025].
+
