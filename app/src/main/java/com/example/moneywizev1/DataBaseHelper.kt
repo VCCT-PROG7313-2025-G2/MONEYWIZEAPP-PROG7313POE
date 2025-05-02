@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import java.text.ParseException
 import java.util.Locale
-
+//Based on tutorial by The Zone (2021)
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", null, 7) {
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -105,7 +105,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         }
         val db = writableDatabase
 
-        // Step 1: Get total current expenses for this budget
         val totalCursor = db.rawQuery(
             "SELECT SUM(amount) FROM expenses WHERE budget = ?",
             arrayOf(budget)
@@ -116,7 +115,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         }
         totalCursor.close()
 
-        // Step 2: Get the maxspend value from budgets table
+        
         val maxspendCursor = db.rawQuery(
             "SELECT maxspend FROM budgets WHERE name = ?",
             arrayOf(budget)
@@ -127,7 +126,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         }
         maxspendCursor.close()
 
-        // Step 3: Compare and reject if over budget
+     
         if (currentTotal + amount > maxspend) {
 
             return false // Expense not inserted because it exceeds maxspend
@@ -229,7 +228,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
 
         return transactions
     }
-    // Inside your DatabaseHelper class
+   
     fun getAllBudgets2(): List<String> {
         val budgets = mutableListOf<String>()
         val db = this.readableDatabase
@@ -389,7 +388,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
     }
 
     fun insertBudget(name: String, amount: Double, maxspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
-        // Validate date
+      
 
         val db = writableDatabase
         val values = ContentValues().apply {
