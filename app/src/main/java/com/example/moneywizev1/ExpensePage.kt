@@ -33,11 +33,11 @@ class ExpensePage : AppCompatActivity() {
         val nameField = findViewById<EditText>(R.id.editTextText8)
         val amountField = findViewById<EditText>(R.id.editTextNumber)
         val dateField = findViewById<EditText>(R.id.editTextDate2)
-        budgetSpinner = findViewById(R.id.budgetSpinner) // Spinner, not EditText
+        budgetSpinner = findViewById(R.id.budgetSpinner)
         val categoryField = findViewById<EditText>(R.id.editTextText6)
         val notesField = findViewById<EditText>(R.id.editTextText5)
         loadBudgetsIntoSpinner()
-        // 🔁 CHANGED: Use ACTION_OPEN_DOCUMENT instead of ACTION_GET_CONTENT
+        // Add photo button functional
         addPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -125,7 +125,7 @@ class ExpensePage : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         budgetSpinner.adapter = adapter
     }
-    // 🔁 CHANGED: Handle URI permission for long-term access
+    
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
