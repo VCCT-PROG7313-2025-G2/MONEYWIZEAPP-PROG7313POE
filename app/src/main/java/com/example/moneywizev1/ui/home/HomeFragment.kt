@@ -16,7 +16,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+//Apadted from tutorial by Furqan Yasin (2025). 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
