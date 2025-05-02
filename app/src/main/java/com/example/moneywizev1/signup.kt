@@ -26,7 +26,6 @@ class signup : AppCompatActivity() {
         val confirmPasswordField = findViewById<EditText>(R.id.editTextSignupConfirmPassword)
         val signupButton = findViewById<Button>(R.id.btnCreateAccount)
 
-        // Initialize the database helper
         val db = DatabaseHelper(this)
 
         signupButton.setOnClickListener {
