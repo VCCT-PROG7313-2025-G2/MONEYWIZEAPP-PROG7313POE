@@ -148,5 +148,5 @@ class ExpensePage : AppCompatActivity() {
     }
 }
 
-TonikamiTV (2015). Android Studio Tutorial - Upload Picture Part 1 - User Interface. [online] YouTube. Available at: https://www.youtube.com/watch?v=e8x-nu9-_BM [Accessed 25 Apr. 2025].
+// TonikamiTV (2015). Android Studio Tutorial - Upload Picture Part 1 - User Interface. [online] YouTube. Available at: https://www.youtube.com/watch?v=e8x-nu9-_BM [Accessed 25 Apr. 2025].
 
