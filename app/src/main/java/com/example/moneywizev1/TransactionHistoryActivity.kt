@@ -7,7 +7,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
-
+// Adapted from  tutorial by Coding with Dev (2023). 
 class TransactionHistoryActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var startDateEditText: EditText
