@@ -21,75 +21,82 @@ class Budget : AppCompatActivity() {
         // Get references to all EditTexts and Button
         val nameInput = findViewById<EditText>(R.id.editTextText)
         val amountInput = findViewById<EditText>(R.id.editTextDate)
-        val minspendInput = findViewById<EditText>(R.id.minSpendEditTxt)
+        val maxspendInput = findViewById<EditText>(R.id.maxspendEditTxt)
         val capitalInput = findViewById<EditText>(R.id.editTextNumber)
         val notesInput = findViewById<EditText>(R.id.editTextText2)
         val dateInput = findViewById<EditText>(R.id.editTextDate2)
         val confirmButton = findViewById<Button>(R.id.button)
         val monthlyGoalInput = findViewById<EditText>(R.id.monthlyGoalEditTxt)
+         fun isValidDate(date: String): Boolean {
+            return try {
+                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                sdf.isLenient = false
+                sdf.parse(date)
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
 
         // Button click: Save to database
         confirmButton.setOnClickListener {
             val name = nameInput.text.toString().trim()
             val amountStr = amountInput.text.toString().trim()
-            val minspendStr = minspendInput.text.toString().trim()
+            val maxspendStr = maxspendInput.text.toString().trim()
             val capitalStr = capitalInput.text.toString().trim()
             val monthlyGoalStr = monthlyGoalInput.text.toString().trim()
             val notes = notesInput.text.toString().trim()
             val date = dateInput.text.toString().trim()
 
-            if (name.isEmpty() || amountStr.isEmpty() || minspendStr.isEmpty() || capitalStr.isEmpty() || monthlyGoalStr.isEmpty() || date.isEmpty()) {
-                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT)
-                    .show()
+            if (name.isEmpty() || amountStr.isEmpty() || maxspendStr.isEmpty() || capitalStr.isEmpty() || monthlyGoalStr.isEmpty() || date.isEmpty()) {
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Convert amount and capital to Double
             val amount = amountStr.toDoubleOrNull()
             val capital = capitalStr.toDoubleOrNull()
-            val minspend = minspendStr.toDoubleOrNull()
+            val maxspend = maxspendStr.toDoubleOrNull()
             val monthlyGoal = monthlyGoalStr.toDoubleOrNull()
 
-            if (amount == null || capital == null || minspend == null || monthlyGoal == null) {
-                Toast.makeText(
-                    this,
-                    "Amount and Capital must be valid numbers.",
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (amount == null || capital == null || maxspend == null || monthlyGoal == null) {
+                Toast.makeText(this, "Amount and Capital must be valid numbers.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val success =
-                dbHelper.insertBudget(context=this,name, amount, minspend, capital, monthlyGoal, notes, date)
+            if (!isValidDate(date)) {
+                Toast.makeText(this, "Error: Date must be in format YYYY-MM-DD", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (monthlyGoal > maxspend) {
+                Toast.makeText(this, "Monthly goal cannot be greater than spend limit.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            val success = dbHelper.insertBudget(
+                name,
+                amount,
+                maxspend,
+                capital,
+                monthlyGoal,
+                notes,
+                date
+            )
+
             if (success) {
                 Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show()
 
-                // Clear the form
                 nameInput.text.clear()
                 amountInput.text.clear()
-                minspendInput.text.clear()
+                maxspendInput.text.clear()
                 capitalInput.text.clear()
                 monthlyGoalInput.text.clear()
                 notesInput.text.clear()
                 dateInput.text.clear()
             } else {
-                if (monthlyGoal > minspend) {
-                    Toast.makeText(
-                        this,
-                        "Monthly goal cannot be greater than spend limit.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(this, "Failed to save budget.", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            // Handle system bars insets (status bar, navigation bar)
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
+                Toast.makeText(this, "Failed to save budget.", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }

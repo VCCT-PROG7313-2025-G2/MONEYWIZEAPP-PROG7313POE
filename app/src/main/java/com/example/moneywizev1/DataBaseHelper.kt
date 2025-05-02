@@ -37,7 +37,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
                 imageUri TEXT
             )
         """.trimIndent())
-        db.execSQL("CREATE TABLE budgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL,minspend REAL,capital REAL,monthlyGoal REAL, notes TEXT, date TEXT)")
+        db.execSQL("CREATE TABLE budgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL,maxspend REAL,capital REAL,monthlyGoal REAL, notes TEXT, date TEXT)")
 
     }
 
@@ -116,21 +116,21 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         }
         totalCursor.close()
 
-        // Step 2: Get the minspend value from budgets table
-        val minSpendCursor = db.rawQuery(
-            "SELECT minspend FROM budgets WHERE name = ?",
+        // Step 2: Get the maxspend value from budgets table
+        val maxspendCursor = db.rawQuery(
+            "SELECT maxspend FROM budgets WHERE name = ?",
             arrayOf(budget)
         )
-        var minspend = Double.MAX_VALUE // Default to high if not found
-        if (minSpendCursor.moveToFirst()) {
-            minspend = minSpendCursor.getDouble(0)
+        var maxspend = Double.MAX_VALUE // Default to high if not found
+        if (maxspendCursor.moveToFirst()) {
+            maxspend = maxspendCursor.getDouble(0)
         }
-        minSpendCursor.close()
+        maxspendCursor.close()
 
         // Step 3: Compare and reject if over budget
-        if (currentTotal + amount > minspend) {
+        if (currentTotal + amount > maxspend) {
 
-            return false // Expense not inserted because it exceeds minspend
+            return false // Expense not inserted because it exceeds maxspend
         }
 
         // Step 4: Proceed with inserting
@@ -388,22 +388,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         }
     }
 
-    fun insertBudget(context: Context,name: String, amount: Double, minspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
+    fun insertBudget(name: String, amount: Double, maxspend: Double, capital: Double,monthlyGoal: Double, notes: String, date: String): Boolean {
         // Validate date
-        if (!isValidDate(date)) {
-            Toast.makeText(context, "Error: Date must be in format YYYY-MM-DD", Toast.LENGTH_LONG).show()
-            return false
-        }
-        // Error check
-        if (monthlyGoal > minspend) {
-            Log.e("InsertBudget", "monthlyGoal ($monthlyGoal) cannot be greater than minspend ($minspend)")
-            return false
-        }
+
         val db = writableDatabase
         val values = ContentValues().apply {
             put("name", name)
             put("amount", amount)
-            put("minspend", minspend)
+            put("maxspend", maxspend)
             put("capital", capital)
             put("monthlyGoal", monthlyGoal)
             put("notes", notes)

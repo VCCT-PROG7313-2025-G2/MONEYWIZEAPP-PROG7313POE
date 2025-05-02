@@ -71,20 +71,20 @@ class ExpensePage : AppCompatActivity() {
             }
             totalExpensesCursor.close()
 
-// Get the minspend from the budgets table
+// Get the maxspend from the budgets table
             val budgetCursor = dbHelper.readableDatabase.rawQuery(
-                "SELECT minspend FROM budgets WHERE name = ?",
+                "SELECT maxspend FROM budgets WHERE name = ?",
                 arrayOf(budget)
             )
-            var minspend = Double.MAX_VALUE
+            var maxspend = Double.MAX_VALUE
             if (budgetCursor.moveToFirst()) {
-                minspend = budgetCursor.getDouble(0)
+                maxspend = budgetCursor.getDouble(0)
             }
             budgetCursor.close()
 
 // Compare and act accordingly
-            if (currentTotal + amount > minspend) {
-                Toast.makeText(this, "Expense exceeds the budget's minspend limit!", Toast.LENGTH_LONG).show()
+            if (currentTotal + amount > maxspend) {
+                Toast.makeText(this, "Expense exceeds the budget's maxspend limit!", Toast.LENGTH_LONG).show()
             } else {
                 val success = dbHelper.insertExpense(context=this,
                     name,
