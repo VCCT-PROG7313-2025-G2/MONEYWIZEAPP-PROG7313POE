@@ -56,7 +56,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
             val amountIndex = cursor.getColumnIndex("amount")
             val capitalIndex = cursor.getColumnIndex("capital")
 
-            // Check if column index is valid before accessing data
+            // This is to check if column index is valid before it accepts the  data
             if (amountIndex >= 0) {
                 amount = cursor.getInt(amountIndex)
             }
@@ -129,7 +129,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
      
         if (currentTotal + amount > maxspend) {
 
-            return false // Expense not inserted because it exceeds maxspend
+            return false // This is if the expense not insterted, because it exceeds maxiumum spend 
         }
 
         // Step 4: Proceed with inserting
@@ -436,4 +436,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
         return results
     }
 }
+
+
+Youtu.be. (2025b). SQLite + Android - Create Database Schema (Book Library App). [online] Available at: https://youtu.be/hJPk50p7xwA?si=75S1YxWsmkuccPoF [Accessed 23 Apr. 2025].
 
