@@ -74,7 +74,7 @@ class IncomePage : AppCompatActivity() {
                 categoryField.text.clear()
                 notesField.text.clear()
                 selectedImageUri = null
-                budgetSpinner.setSelection(0) // Reset Spinner
+                budgetSpinner.setSelection(0) // Resets Spinner
             } else {
                 Toast.makeText(this, "Failed to save income.", Toast.LENGTH_SHORT).show()
             }
@@ -87,7 +87,7 @@ class IncomePage : AppCompatActivity() {
     }
 
     private fun loadBudgetsIntoSpinner() {
-        budgetsList = dbHelper.getAllBudgets2() // <- You need this function in your DatabaseHelper
+        budgetsList = dbHelper.getAllBudgets2() 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, budgetsList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         budgetSpinner.adapter = adapter
