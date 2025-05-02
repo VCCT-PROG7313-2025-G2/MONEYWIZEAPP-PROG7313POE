@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit
 
 class BudgetDetailActivity : AppCompatActivity() {
 
-    private var currentCount = 0  // Current capital
-    private var goal = 0          // Target amount (goal)
+    private var currentCount = 0  
+    private var goal = 0        
     private var celebrationDone = false
     private lateinit var budgetName: String
     private lateinit var dbHelper: DatabaseHelper
@@ -25,10 +25,8 @@ class BudgetDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_budget_detail)
 
-        // Initialize database helper
         dbHelper = DatabaseHelper(this)
-
-        // Bind UI elements
+// elements of page
         val tvProgress = findViewById<TextView>(R.id.tvProgress)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val tvPercentage = findViewById<TextView>(R.id.tvPercentage)
@@ -37,7 +35,7 @@ class BudgetDetailActivity : AppCompatActivity() {
 
         // Receive data from Intent
         budgetName = intent.getStringExtra("budgetName") ?: ""
-        goal = intent.getIntExtra("budgetAmount", 100)  // Get goal (amount)
+        goal = intent.getIntExtra("budgetAmount", 100)  
 
         // Fetch budget data from the database (capital, expenses, income)
         fetchBudgetData(budgetName)
@@ -96,16 +94,16 @@ class BudgetDetailActivity : AppCompatActivity() {
         val query = "SELECT capital,monthlyGoal, maxspend FROM budgets WHERE name = ?"
         val cursor = db.rawQuery(query, arrayOf(budgetName))
         if (cursor != null && cursor.moveToFirst()) {
-            currentCount = cursor.getDouble(0).toInt()  // capital is REAL
-            val maxspend = cursor.getDouble(2)          // maxspend is REAL
+            currentCount = cursor.getDouble(0).toInt()  
+            val maxspend = cursor.getDouble(2)          
             val monthlyGoal = cursor.getDouble(1)
-            // Update Min Spend TextView
+            // Update the Max Spend TextView
             val maxspendTextView = findViewById<TextView>(R.id.maxspendTextView)
             maxspendTextView.text = "Spending limit: $maxspend //MonthlyGoal:$monthlyGoal"
         }
         cursor?.close()
 
-        // Fetch expenses and income
+        
         val expenses = getExpensesForBudget(budgetName)
         val income = getIncomeForBudget(budgetName)
 
