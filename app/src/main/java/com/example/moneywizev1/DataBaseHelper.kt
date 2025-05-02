@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import java.text.ParseException
 import java.util.Locale
-//Based on tutorial by The Zone (2021)
+//This is based on tutorial by The Zone (2021)
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", null, 7) {
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -440,3 +440,4 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "UserDB", nul
 
 Youtu.be. (2025b). SQLite + Android - Create Database Schema (Book Library App). [online] Available at: https://youtu.be/hJPk50p7xwA?si=75S1YxWsmkuccPoF [Accessed 23 Apr. 2025].
 
+Android Knowledge (2023). Upload Retrieve Image from Firebase & Display in RecyclerView, GridView, Staggered | Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=Hn89s4oCdS8 [Accessed 25 Apr. 2025].
