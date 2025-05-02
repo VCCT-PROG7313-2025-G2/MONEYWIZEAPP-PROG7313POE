@@ -2,7 +2,7 @@
 
 ![Cash](https://github.com/user-attachments/assets/31c19bd9-e37a-4082-abb4-70211518f1e3)
 
-### The Moneywise app is a fun and useful app that ensures you meet all your saving goals and tracks all your spending.
+### The Moneywise app is a fun and useful app that ensures you meet all your saving goals and track all your spending.
 
 
 PROG7313 POE GROUP 6 (The GVNG) SUBMISSION 
